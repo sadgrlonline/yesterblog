@@ -1,0 +1,178 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: #161616;
+    color: white;
+    font-size: 1.1em;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    border: 1px solid white;
+}
+
+.wrapper {
+    margin: 10px;
+    border: 1px solid white;
+    background-color: #161616;
+    padding: 40px;
+}
+
+table {
+    border: 1px solid #643DB5;
+    margin: 20px;
+}
+
+td {
+    padding: 10px;
+}
+
+tr {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: 50px;
+    border-bottom: 1px solid #643DB5;
+}
+
+tr:nth-child(odd) {
+    background-color: #494949;
+}
+
+tr:nth-child(even) {}
+
+tr a {
+    color: #ff8cff;
+    font-weight: bold;
+}
+
+th {
+    cursor: pointer;
+    background-color: #56289B;
+}
+
+h1 {
+    font-size: 50px;
+}
+
+#honeypot {
+    display: none;
+}
+
+.flex {
+    display: flex;
+}
+
+
+.commentsArea {
+    padding: 40px;
+}
+
+.leaveComment {
+    margin-bottom: 40px;
+}
+
+.footer a {
+    display: block;
+}
+
+.footer {
+    justify-content: space-between;
+    width: 100%;
+    display: flex;
+}
+
+.comment {
+    border: 1px solid white;
+    padding: 20px;
+}
+
+nav {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+nav ul {
+    list-style-type: none;
+}
+
+nav ul li {
+    display: inline-block;
+}
+
+nav ul li a {
+    font-weight: bold;
+    color: #643DB5;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="url"],
+input[type="email"] {
+    height: 30px;
+}
+
+#div_login {
+    max-width: 20%;
+    margin: 0 auto;
+}
+
+.content {
+    padding: 40px;
+}
+
+.entry {
+    font-size: 20px;
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.entry a {
+    font-weight: bold;
+}
+
+.date {
+    font-style: italic;
+    color: #a3a1a1;
+}
+
+#approve {
+    font-size: 30px;
+    width: 100%;
+    display: block;
+    text-align: center;
+    color: green;
+    font-weight: bold;
+    padding-top: 20px;
+
+}
+
+#approve a {
+    display: block;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input {
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-family: sans-serif;
+}
+
+#titleInput {
+    width: 100%;
+}
+
+#submitEntry input {
+    width: 100%;
+}
