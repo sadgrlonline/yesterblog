@@ -20,15 +20,17 @@
 
             <?php
             include "config.php";
-
             date_default_timezone_set("US/Eastern");
+
+            // shows approve button
             if (isset($_GET['approveView'])) {
                 $id = $_GET['approveView'];
                 echo '<a id="approve" href="/yesterblog/view.php?approve=' . $id . '">Approve this Entry</a>';
-
-                } else if (isset($_GET['entry']))  {
+            } else if (isset($_GET['entry']))  {
                 $id = $_GET['entry'];
-                }
+            }
+
+
                 $stmt = $con->prepare("SELECT * FROM blogs WHERE id = ?");
                 $stmt->bind_param("s", $id);
                 $stmt->execute();
@@ -39,6 +41,7 @@
                     $id = $row['id'];
                     $name = $row['owner_name'];
                     $link = $row['owner_link'];
+                    $bio = $row['owner_bio'];
                     $dateposted = $row['dateposted'];
                     $timeposted = $row['timeposted'];
                     $title = $row['title'];
@@ -53,31 +56,76 @@
                     $match = $qry->num_rows();
                     $randomNum = rand(5, 15);
                     echo '<div class="blog">';
-
-
-                    //echo "Approval";
+                    if (isset($_SESSION['username']) && $_SESSION['username'] == true) {
+                        echo '<a href="view.php?edit=' . $id . '">Edit</a>';
+                        //echo "Welcome to the member's area, " . $_SESSION['username'] . "!";
+                    }
                     echo '<div class="title"><h2>' . $title . '</h2></div>';
                     echo '<div class="date">Posted on ' . $formattedDate . ' at ' . $formattedTime . '</div>';
                     echo '<div class="author">by <a href="' . $link . '">' . $name . '</a></div>';
                     echo '<div class="post">' . $entry . '</div>';
+                    echo '<div class="bioArea"><p>' . $name . ' is ' . $bio . '</p>';
+                    if ($link !== '') {
+                    echo '<p class="link">You can find ' . $name . ' <a href="' . $link . ' target="_blank">here</a>.</p>';
+                    }
                     echo '<div class="footer"></div>';
+                    echo '</div>';
                     echo '</div>';
 
 
                 }
 
+                // APPROVAL LOGIC
                 if (isset($_GET['approve'])) {
-                    
                     $id = $_GET['approve'];
                     $stmt = $con->prepare("UPDATE blogs SET approved = 1 WHERE id = ?");
                     $stmt->bind_param("s", $id);
                     $stmt->execute();
                     $stmt->close();
                     header("Location: approve/");
-                    } 
+                }
 
+                // EDIT LINK LOGIC - this turns everything 'editable'
+                if (isset($_GET['edit'])) {
+                    $stmt->close();
+                    $id = $_GET['edit'];
+                    $stmt = $con->prepare("SELECT * FROM blogs WHERE id = ?");
+                    $stmt->bind_param("s", $id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                
+                
+                    while ($row = $result->fetch_assoc()) {
+                        $id = $row['id'];
+                        $name = $row['owner_name'];
+                        $email = $row['owner_email'];
+                        $link = $row['owner_link'];
+                        $bio = $row['owner_bio'];
+                        $dateposted = $row['dateposted'];
+                        $timeposted = $row['timeposted'];
+                        $title = $row['title'];
+                        $entry = $row['entry'];
+
+                        $formattedDate = date("l, F j, Y", strtotime($dateposted));
+                        $formattedTime = date("g:iA", strtotime($timeposted));
+                        echo '<form id="submitEntry" method="POST" action="submit.php">';
+                        echo '<label>Title</label> <input type="text" name="titleInput" id="titleInput" value="' . $title . '"><br>';
+                        echo '<label></label><textarea name="entryInput" id="entryInput">' . $entry . '</textarea><br>';
+                        echo '<label>Name/Alias</label><input type="text" name="nameInput" id="nameInput" value="' . $name . '"><br>';
+                        echo '<label>Short Bio</label><textarea name="bioInput" id="bioInput">' . $bio . '</textarea>';
+                        echo '<label>Email</label><input type="email" name="emailInput" id="emailInput" value="' . $email . '"><br>';
+                        echo '<label>Link to your site</label><input type="url" name="linkInput" id="linkInput" value="' . $link .  '"><br>';
+                        echo '<input type="hidden" name="id" value="' . $id .'">';
+                        echo '<input type="submit" name="submitEdit" value="Submit Edit">';
+
+                    }
+                }
             ?>
-
+          
+            <?php
+                // this conditionally hides all of the comment stuff for editing posts
+                if (!isset($_GET['edit'])) {
+            ?>
             <div class="commentsArea">
                 <div class="leaveComment">
                 <strong>Leave a comment:</strong><br><br>
@@ -105,6 +153,7 @@
 
                 </form>
             </div>
+
             <?php
                 // post comments
                 if (isset($_POST['postComment'])){
@@ -150,11 +199,13 @@
                 $match = $stmt->num_rows();
                 ?>
                 <div class="comment">
-                    <div class="nickname"><strong>From</strong> <?php echo $Nickname; ?></div><br>
-                    <div class="commentDate">on <?php echo $formattedCommentDate ?> at <?php echo $formattedCommentTime ?></div><br>
-                    <div class="message"><strong></strong> <?php echo $Comment; ?></div><br><hr>
+                    <div class="nickname"><strong>From</strong> <?php echo $Nickname; ?>
+                    <span class="commentDate"><strong>on</strong> <?php echo $formattedCommentDate ?> at <?php echo $formattedCommentTime ?></span></div><br>
+                    <div class="message"><strong></strong> <?php echo $Comment; ?></div><br>
                 </div>
-        <?php } ?>
+        <?php } 
+                    }
+                    ?>
     </div>
     <?php
     ?>
@@ -163,3 +214,15 @@
 
 </div>
     </div>
+<script>
+tinymce.init({
+    selector: "textarea#entryInput",
+    plugins: 'link',
+    setup: function (editor) {
+        editor.on('change', function () {
+            tinymce.triggerSave();
+        });
+    }
+});
+
+    </script>
