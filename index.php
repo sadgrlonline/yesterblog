@@ -14,7 +14,7 @@
         <div class="container">
             <div class="wrapper">
                 <h1>Yesterblog</h1>
-                   
+                   <p>A collaborative blog about the past, present and future of the internet.</p>
 
                         <?php
                         include "config.php";
@@ -33,12 +33,11 @@
                             $title = $row['title'];
                             $entry = $row['entry'];
                             $formattedDate = date("l, F j, Y", strtotime($dateposted));
-                            //echo $id;
                             //echo $id, $bowner, $dateposted, $timeposted, $title, $entry, $likes;
                             echo '<div class="blog">';
                             echo '<div class="title"><h2>' . $title . '</h2></div>';
-                            echo '<div class="datePosted">Posted on ' . $formattedDate . '</div>';
-                            echo '<div class="author">by <a href="' . $link . '">' . $name . '</a></div>';
+                            echo '<div class="whoWhen">Posted on <span class="date">' . $formattedDate . '</span>';
+                            echo '<span class="author"> by <a href="' . $link . '">' . $name . '</a></span></div>';
                             echo '<div class="post">' . $entry . '</div>';
                             echo '<div class="footer"><a href="view.php?entry=' . $id . '" id="View"" id="addComment">Add Comment</a><a href="view.php?entry=' . $id . '" id="View">View Entry</a></div>';
                             echo '</div>';
