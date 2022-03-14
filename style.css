@@ -1,28 +1,47 @@
+@font-face {
+    font-family: 'Libre Franklin';
+    src: url('assets/fonts/LibreFranklin-VariableFont_wght.ttf');
+}
+
+@font-face {
+    font-family: 'Libre Franklin';
+    src: url('assets/fonts/LibreFranklin-Italic-VariableFont_wght.ttf');
+    font-style: italic;
+}
+
 * {
     box-sizing: border-box;
 }
+
+:root {
+    --bg-color: #180704;
+    --text-color: #6776ca;
+    --text-color-lt: #9aa4df;
+    --accent: #ac91ea;
+    --accent2: #1d00a8;
+}
+
+
 
 html,
 body {
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
-    background-color: #161616;
-    color: white;
+    font-family: 'Libre Franklin', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     font-size: 1.1em;
 }
 
 .container {
     max-width: 900px;
     margin: 0 auto;
-    border: 1px solid white;
 }
 
 .wrapper {
     margin: 10px;
-    border: 1px solid white;
-    background-color: #161616;
     padding: 40px;
+    padding-top: 0;
 }
 
 table {
@@ -32,6 +51,19 @@ table {
 
 td {
     padding: 10px;
+}
+
+.blog a {
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+.blog {
+    border: 1px solid var(--accent);
+    padding: 40px;
+    line-height: 1.476;
+    padding-top: 0;
+    margin-bottom: 30px;
 }
 
 tr {
@@ -45,8 +77,6 @@ tr {
 tr:nth-child(odd) {
     background-color: #494949;
 }
-
-tr:nth-child(even) {}
 
 tr a {
     color: #ff8cff;
@@ -90,17 +120,20 @@ h1 {
 }
 
 .comment {
-    border: 1px solid white;
+    border: 1px solid var(--accent);
     padding: 20px;
 }
 
 nav {
-    max-width: 600px;
+    max-width: 900px;
     margin: 0 auto;
 }
 
 nav ul {
     list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 nav ul li {
@@ -140,7 +173,22 @@ input[type="email"] {
 
 .date {
     font-style: italic;
-    color: #a3a1a1;
+
+}
+
+.whoWhen {
+    margin-bottom: 20px;
+    color: var(--text-color-lt);
+}
+
+.bioArea {
+    background-color: var(--text-color-lt);
+    padding: 20px;
+    color: black;
+}
+
+.bioArea a {
+    color: var(--accent2);
 }
 
 #approve {
@@ -163,10 +211,21 @@ label {
     font-weight: bold;
 }
 
-input {
+input,
+textarea {
     margin-bottom: 10px;
     font-size: 16px;
     font-family: sans-serif;
+}
+
+textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    height: 200px;
+}
+
+.tox-tinymce {
+    height: 600px !important;
 }
 
 #titleInput {
@@ -175,4 +234,18 @@ input {
 
 #submitEntry input {
     width: 100%;
+}
+
+.title>h2 {
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--text-color);
+    color: var(--accent);
+}
+
+button {
+    height: 31px;
+    width: 100px;
+    font-size: 14px;
+    font-family: sans-serif;
+    margin-top: 20px;
 }
