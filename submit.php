@@ -39,9 +39,9 @@ if (isset($_POST['submit'])) {
             $name = $_POST['nameInput'];
             $email = $_POST['emailInput'];
             $link = $_POST['linkInput'];
+            $bio = $_POST['bioInput'];
             $dateposted = date("Y-m-d");
             $timeposted = date('Y-m-d H:i:s');
-            $content = $_REQUEST['entryInput'];
 
             // Check fields are empty or not
             if ($entry == ''){
@@ -51,23 +51,30 @@ if (isset($_POST['submit'])) {
 
             echo $title, $entry, $name, $email, $link, $dateposted, $timeposted;
 
-            $stmt = $con->prepare("INSERT INTO blogs(owner_name, owner_email, owner_link, dateposted, timeposted, title, entry) VALUES (?,?,?,?,?,?,?)");
-            if (false === $stmt) {
-                die('prepare() failed:' . htmlspecialchars($stmt->error));
-                exit();
-               }
-            $stmt->bind_param("sssssss", $name, $email, $link, $dateposted, $timeposted, $title, $entry);
-            if (false === $stmt) {
-                die('bind_params() failed:' . htmlspecialchars($stmt->error));
-                exit();
-               }
+            $stmt = $con->prepare("INSERT INTO blogs(owner_name, owner_email, owner_link, owner_bio, dateposted, timeposted, title, entry) VALUES (?,?,?,?,?,?,?,?)");
+            $stmt->bind_param("ssssssss", $name, $email, $link, $bio, $dateposted, $timeposted, $title, $entry);
             $stmt->execute();
-            if (false === $stmt) {
-                die('execute() failed:' . htmlspecialchars($stmt->error));
-                exit();
-               }
             $stmt->close();
-            header("Location: submit/index.php");
+            header("Location: index.php");
            
         }
+}
+
+// handled edit submission
+if (isset($_POST['submitEdit'])) {
+    $id = trim($_POST['id']);
+    $title = trim($_POST['titleInput']);
+    $entry = trim($_POST['entryInput']);
+    $name = $_POST['nameInput'];
+    $email = $_POST['emailInput'];
+    $link = $_POST['linkInput'];
+    $bio = $_POST['bioInput'];;  
+    echo $id,$title,$entry,$name,$email,$link,$bio,$content; 
+    $stmt = $con->prepare("UPDATE blogs SET owner_name=?, owner_email=?, owner_link=?, owner_bio=?, title=?, entry=? WHERE id = ?");
+            $stmt->bind_param("sssssss", $name, $email, $link, $bio, $title, $entry, $id);
+    
+            $stmt->execute();
+            $stmt->close();
+    header("Location: index.php");         
+
 }
