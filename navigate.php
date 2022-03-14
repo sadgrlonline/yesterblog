@@ -1,11 +1,7 @@
 <nav>
     <ul>
         <li>
-        <?php if (!isset($_SESSION['username'])): ?>
         <a href="/yesterblog/">Home</a>
-        <?php else: ?>
-        <li><a href="/yesterblog/dashboard/">Home</a></li>
-        <?php endif?>
 
         <?php if (!isset($_SESSION['username'])): ?>
         <?php else: ?>
@@ -14,7 +10,7 @@
 
         <?php if (!isset($_SESSION['username'])): ?>
         <?php else: ?>
-        <li><a href="../submit/">Submit</a></li>
+        <li><a href="/yesterblog/submit/">Submit</a></li>
         <?php endif?>
 
         <?php if (!isset($_SESSION['username'])): ?>
@@ -26,6 +22,7 @@
         <?php else: ?>
         <li><a href="/yesterblog/edit/">Edit</a></li>
         <?php endif?>
+
         
             
         </li>
