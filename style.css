@@ -19,6 +19,7 @@
     --text-color-lt: #9aa4df;
     --accent: #ac91ea;
     --accent2: #1d00a8;
+    --sideBoxBtmSpace: 20px;
 }
 
 
@@ -29,19 +30,61 @@ body {
     padding: 0;
     font-family: 'Libre Franklin', sans-serif;
     background-color: var(--bg-color);
-    color: var(--text-color);
+    color: var(--accent);
     font-size: 1.1em;
 }
 
+body a {
+    color: var(--accent);
+}
+
 .container {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
+.flex {
+    display: flex;
+}
+
 .wrapper {
-    margin: 10px;
-    padding: 40px;
     padding-top: 0;
+    max-width: 70%;
+}
+
+.sidebar {
+    width: 20%;
+    border-left: none;
+    font-size: smaller;
+    text-align: right;
+}
+
+.sideBox {
+    background-color: var(--accent);
+    color: black;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.sideBox a {
+    color: var(--accent2);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+details {
+    padding-left: 0;
+}
+
+.randomFeatures {
+    display: flex;
+    justify-content: space-between;
+}
+
+.feature {
+    border: 1px solid var(--accent);
+    max-width: 32%;
+    padding: 10px;
 }
 
 table {
@@ -54,7 +97,7 @@ td {
 }
 
 .blog a {
-    color: var(--text-color);
+    color: var(--accent);
     font-weight: bold;
 }
 
@@ -101,39 +144,41 @@ h1 {
 }
 
 
-.commentsArea {
-    padding: 40px;
-}
 
 .leaveComment {
     margin-bottom: 40px;
 }
 
-.footer a {
+.links a {
     display: block;
 }
 
-.footer {
+.links {
     justify-content: space-between;
     width: 100%;
     display: flex;
 }
 
 .comment {
-    border: 1px solid var(--accent);
     padding: 20px;
+    margin: 50px;
+}
+
+.comments>details>div:nth-child(even) {
+    background-color: #2b0f0a;
 }
 
 nav {
-    max-width: 900px;
+    max-width: 1100px;
     margin: 0 auto;
+
 }
 
 nav ul {
     list-style-type: none;
     padding: 0;
     display: flex;
-    justify-content: space-evenly;
+    margin-left: 40px;
 }
 
 nav ul li {
@@ -142,7 +187,8 @@ nav ul li {
 
 nav ul li a {
     font-weight: bold;
-    color: #643DB5;
+    color: var(--accent);
+    margin-right: 30px;
 }
 
 input[type="text"],
@@ -157,14 +203,16 @@ input[type="email"] {
     margin: 0 auto;
 }
 
+#comment {
+    max-width: 70%;
+}
+
 .content {
     padding: 40px;
 }
 
 .entry {
     font-size: 20px;
-    max-width: 80%;
-    margin: 0 auto;
 }
 
 .entry a {
@@ -182,9 +230,16 @@ input[type="email"] {
 }
 
 .bioArea {
-    background-color: var(--text-color-lt);
+    background-color: var(--accent);
     padding: 20px;
     color: black;
+    margin-top: 80px;
+    margin-bottom: 20px;
+}
+
+.bioArea>div {
+    border: 3px double var(--bg-color);
+    padding: 10px;
 }
 
 .bioArea a {
@@ -196,9 +251,10 @@ input[type="email"] {
     width: 100%;
     display: block;
     text-align: center;
-    color: green;
+    background-color: var(--accent);
+    color: black;
     font-weight: bold;
-    padding-top: 20px;
+    margin-top: 20px;
 
 }
 
@@ -238,7 +294,7 @@ textarea {
 
 .title>h2 {
     padding-bottom: 10px;
-    border-bottom: 1px solid var(--text-color);
+    border-bottom: 1px solid var(--accent);
     color: var(--accent);
 }
 
@@ -248,4 +304,31 @@ button {
     font-size: 14px;
     font-family: sans-serif;
     margin-top: 20px;
+}
+
+summary {
+    cursor: pointer;
+    color: var(--accent);
+}
+
+/* admin view */
+
+.editEntry,
+.deleteEntry {
+    display: block;
+    margin-top: 20px;
+    background-color: var(--accent);
+    padding: 10px;
+    max-width: 100px;
+    color: black !important;
+}
+
+@media only screen and (max-width: 760px) {
+    .flex {
+        display: block;
+    }
+
+    .wrapper {
+        max-width: 100%;
+    }
 }
