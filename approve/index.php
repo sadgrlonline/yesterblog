@@ -27,6 +27,7 @@
             <div class="wrapper">
                 <div class="content">
             <h1>Approve Entries</h1>
+            <p>View the entry to approve it.</p>
             <?php
 
             date_default_timezone_set("US/Eastern");
@@ -51,9 +52,10 @@
                 $title = $row['title'];
                 $entry = $row['entry'];
                 $formattedDate = date("l, F j, Y", strtotime($dateposted));
-                echo '<div class="blog">';
-                echo '<span class="title"><a href="../view.php?approveView=' . $id . '">' . $title . ' </a></span>';
-                echo '- <span class="date">' . $formattedDate . '</span></div>';
+                echo '<div>';
+                echo '<span class="title"><strong><a href="../view.php?approveView=' . $id . '">' . $title . '</a> </strong></span>';
+                echo '- <span class="date">' . $formattedDate . '</span><br>';
+                echo '<span class="author"><strong>Submitted by:</strong> ' . $name . '</div>';
             }
         $stmt->close();
         }
