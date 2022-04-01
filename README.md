@@ -19,10 +19,9 @@ It uses PHP 7.4.
 - Alternative "blogroll" with excerpts and 'read more' links (/excerpt.php)
 - Added lil widget to display 3 post previews at random under comment section.
 - Added doodad that displays a Yesterweb webring member at random on the sidebar.
+- Used TinyMCE for a really cool open-source text editor with formatting options.
 
 # To do
 - Add pagination, probably
-- Add form for submitting/approving blog ideas
-- Add registration page
-- Add forgot password page
-- Upload DB schema (once it's fully usable)
+~~ Add form for submitting/approving blog ideas~~
+~~ Upload DB schema~~
