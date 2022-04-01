@@ -2,30 +2,53 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <?php 
+         session_start();
+        include "config.php";
+        $stylePath = "/assets/css/";
+        // SELECT
+                $stmt = $con->prepare("SELECT * FROM stylesheets");
+                $stmt->execute();
+                $result = $stmt->get_result();
+                while ($row = $result->fetch_assoc()) {
+                echo "<link rel='stylesheet' href='" . $stylePath . $row['fileName'] . "' data-theme='" . $row['title'] . "'>";
+                }
+                $stmt->close();
+        
+        include 'navigate.php'; 
+        $id = $_GET['entry'];
+        $stmt = $con->prepare("SELECT * FROM blogs WHERE id = ?");
+                    $stmt->bind_param("s", $id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    
+                    
+                    while ($row = $result->fetch_assoc()) {
+                        $title = $row['title'];
+                        ?>
+        <title><?php echo $title; ?></title>
+        <?php } 
+        $stmt->close(); ?>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="style.css">
+       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.0/tinymce.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     </head>
 
     <body>
-        <?php 
-        session_start();
-        include 'navigate.php' 
-        ?>
 
         <main class="container">
                 <div class="wrapper">
 
                     <?php
-                    include "config.php";
+                    
                     date_default_timezone_set("US/Eastern");
 
                     // shows approve button (might need to change how this works)
                     if (isset($_GET['approveView'])) {
                         $id = $_GET['approveView'];
-                        echo '<a id="approve" href="/yesterblog/view.php?approve=' . $id . '">Approve this Entry</a>';
+                        echo '<a id="approve" href="/view.php?approve=' . $id . '">Approve this Entry</a>';
                     } else if (isset($_GET['entry']))  {
                         $id = $_GET['entry'];
                     }
@@ -57,7 +80,7 @@
                         $randomNum = rand(5, 15);
                         echo '<article class="blog">';
                         if (isset($_SESSION['username']) && $_SESSION['username'] == true) {
-                            echo '<div class="flex">';
+                            echo '<div class="flexEdit">';
                             echo '<a class="editEntry" href="view.php?edit=' . $id . '">Edit</a>';
                             echo '<a class="deleteEntry" href="view.php?delete=' . $id . '">Delete</a>';
                             echo '</div>';
@@ -75,7 +98,7 @@
                                                                     // shows approve button (might need to change how this works)
                     if (isset($_GET['approveView'])) {
                         $id = $_GET['approveView'];
-                        echo '<a id="approve" href="/yesterblog/view.php?approve=' . $id . '">Approve this Entry</a>';
+                        echo '<a id="approve" href="/view.php?approve=' . $id . '">Approve this Entry</a>';
                     } else if (isset($_GET['entry']))  {
                         $id = $_GET['entry'];
                     }
@@ -159,6 +182,20 @@
                         $stmt->close();
                         header('location: index.php');
                     }
+                    
+                    // DELETE COMMENT LOGIC
+                    if (isset($_GET['deleteComment'])) {
+                        // check if logged in
+                        if (!isset($_SESSION["username"])) {
+                            header('location: error.php');
+                        }
+                        $id = $_GET["deleteComment"];
+                        $stmt = $con->prepare("DELETE FROM comments WHERE id = ?");
+                        $stmt->bind_param("s", $id);
+                        $stmt->execute();
+                        $stmt->close();
+                        header('location: index.php');
+                    }
                 ?>
 
                 <?php
@@ -167,10 +204,11 @@
                 ?>
                 <div class="commentsArea">
                     <div class="leaveComment">
-                    <details><summary><strong>Leave a comment</strong></summary><br><br>
+                    <details open><summary><strong>Leave a comment</strong></summary><br><br>
                     <div class="form">
                     <form method='post' action=''>
                         <input type="hidden" name="id" value="<?php echo $id; ?>">
+                        <input type="hidden" name="honeypot">
                                 <label for="nickname">Nickname</label><br>
                                 <input type="text" class="form-control" name="nickname" id="nickname" required>
                             <br>
@@ -197,12 +235,17 @@
                         $comment = trim($_POST['comment']);
                         $dateposted = date("Y-m-d H:i:s");
                         $id = $_GET['entry'];
+                        
 
                         // Check fields are empty or not
                         if ($comment == ''){
                         $error_message = "You can't submit a blank comment.";
                         echo $error_message;
                         }
+                          $honeypot = $_POST['honeypot'];
+                              if(!empty($honeypot)){
+                                return; //you may add code here to echo an error etc.
+                              }else{
 
                         // Insert records
                         $insertSQL = "INSERT INTO comments(blogid, nickname, email, dateposted, comment) values(?,?,?,?,?)";
@@ -211,6 +254,7 @@
                         $stmt->execute();
                         $stmt->close();
                         echo "<script>history.pushState({}, '', '')</script>";
+                    }
                     }
                 ?>
 
@@ -232,6 +276,7 @@
                     echo "<strong>View comments (" . $number . ")</strong></summary>";
                     
                     while ($row = $result->fetch_assoc()) {
+                        $id = $row['id'];
                 $CommentDate=$row["dateposted"];
                 $Nickname=$row["nickname"];
                 $Email=$row["email"];
@@ -295,11 +340,18 @@
                     .wrapper {
                         max-width:900px;
                     }
+                    .blog {
+                        border:none;
+                    }
                     </style>
 <script>
 tinymce.init({
     selector: "textarea#entryInput",
-    plugins: 'link',
+    plugins: 'link image media paste preview spellchecker autosave lists code',
+    autosave_ask_before_unload: true,
+    autosave_interval: '10s',
+    autosave_restore_when_empty: true,
+    toolbar: 'undo redo aligncenter alignjustify alignleft alignnone alignright numlist bullist indent outdent blockquote bold italic underline code styleselect fontselect fontsizeselect forecolor backcolor  removeformat strikethrough spellchecker media wordcount restoredraft preview',
     setup: function (editor) {
         editor.on('change', function () {
             tinymce.triggerSave();
