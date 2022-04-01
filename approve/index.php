@@ -1,14 +1,5 @@
 <!DOCTYPE html>
 <html>
-
-    <head>
-        <meta charset="UTF-8">
-        <title>Approve</title>
-        <link rel="stylesheet" href="../style.css">
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.0/tinymce.min.js"></script>
-    </head>
-
     <?php
     session_start();
 
@@ -18,6 +9,23 @@
     } else {
         include '../config.php';
     ?>
+    <head>
+        <meta charset="UTF-8">
+        <title>Approve Entries</title>
+                <?php 
+        $stylePath = "/assets/css/";
+        // SELECT
+                $stmt = $con->prepare("SELECT * FROM stylesheets");
+                $stmt->execute();
+                $result = $stmt->get_result();
+                while ($row = $result->fetch_assoc()) {
+                echo "<link rel='stylesheet' href='" . $stylePath . $row['fileName'] . "' data-theme='" . $row['title'] . "'>";
+                }
+                $stmt->close();
+        ?>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.0/tinymce.min.js"></script>
+    </head>
 
     <body>
 
@@ -25,8 +33,7 @@
 
         <div class="container">
             <div class="wrapper">
-                <div class="content">
-            <h1>Approve Entries</h1>
+            <h1>Pending Entries</h1>
             <p>View the entry to approve it.</p>
             <?php
 
