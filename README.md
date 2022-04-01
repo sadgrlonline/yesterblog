@@ -23,5 +23,5 @@ It uses PHP 7.4.
 
 # To do
 - Add pagination, probably
-~~ Add form for submitting/approving blog ideas~~
-~~ Upload DB schema~~
+~~Add form for submitting/approving blog ideas~~
+~~Upload DB schema~~
