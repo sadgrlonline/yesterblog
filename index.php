@@ -4,7 +4,21 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="style.css">
+        
+        <?php 
+        include "config.php";
+        $stylePath = "/assets/css/";
+        // SELECT
+                $stmt = $con->prepare("SELECT * FROM stylesheets");
+                $stmt->execute();
+                $result = $stmt->get_result();
+                while ($row = $result->fetch_assoc()) {
+                echo "<link rel='stylesheet' href='" . $stylePath . $row['fileName'] . "' data-theme='" . $row['title'] . "'>";
+                }
+                $stmt->close();
+        ?>
+
+        <script src="scripts/loadStylesheet.js"></script>
         <script src="scripts/script.js"></script>
     </head>
         <body>
@@ -14,14 +28,14 @@
             ?>
 
             <main class="container">
-                <h1>Yesterblog</h1>
+                <h1>Yesterweb Blog</h1>
                         <p>A collaborative blog about the past, present and future of the internet. </p>
                         <p>You can subscribe via RSS <a href="feed.php">here</a>.</p>
                     <div class="flex">
                         <div class="wrapper">
 
                             <?php
-                            include "config.php";
+                            
 
                             date_default_timezone_set("US/Eastern");
 
@@ -69,72 +83,4 @@
                         </main>
         </body>
     </html>
-    <style>
-        .fa-solid {
-            font-family:'Font Awesome 6 Free';
-        }
-    </style>
-    <script>
-
-    var random;
-
-
-    $('#surf').on("click", function(e) {
-        e.preventDefault();
-        random = Math.floor(Math.random() * urlArr.length);
-        console.log(shuffle(urlArr));
-        window.open(shuffle(urlArr)[0]);
-        shuffle(urlArr[0].pop());
-    });
-
-    // this puts all of the entries in a random order
-    function shuffle(urlArr) {
-        let currentIndex = urlArr.length, randomIndex;
-
-        // while there are items left to shuffle...
-        while (currentIndex != 0) {
-            // pick a remaining element...
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            // decrease
-            currentIndex--;
-
-            // swap with current element
-            [urlArr[currentIndex], urlArr[randomIndex]] = [urlArr[randomIndex], urlArr[currentIndex]];
-        }
-        return urlArr;
-    }
-    var firstClick = 0;
-    $('input[type=checkbox]').on("change", function() {
-        if (firstClick !== 1) {
-        //$('tbody').css('display', 'none');
-        firstClick = 1;
-        
-
-        if ($(this).prop("checked") == true) {
-            console.log('checked');
-            var cat = $(this).val();
-            console.log($(this).val());
-            $('.' + cat).css("display", "table-row");
-        } else if ($(this).prop("checked") == false) {
-            console.log('unchecked');
-            var removeCat = $(this).val();
-            $('.' + removeCat).css("display", "none");
-        }
-        // if not first click...
-    } else {
-        //$(this).css("display", "none");
-        if ($(this).prop("checked") == true) {
-            console.log('checked');
-            var cat = $(this).val();
-            console.log($(this).val());
-            $('.' + cat).css("display", "table-row");
-        } else if ($(this).prop("checked") == false) {
-            console.log('unchecked');
-            var removeCat = $(this).val();
-            $('.' + removeCat).css("display", "none");
-        }
-    }
-
-    });
-    </script>
 
