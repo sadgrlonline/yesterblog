@@ -20,6 +20,8 @@
 
         <script src="scripts/loadStylesheet.js"></script>
         <script src="scripts/script.js"></script>
+        
+        <link rel="alternate" type="application/rss+xml" title="Yesterweb Blog" href="/feed.php" />
     </head>
         <body>
             <?php
