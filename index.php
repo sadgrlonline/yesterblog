@@ -5,6 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         
+        <title>Yesterweb Blog</title>
+        
         <?php 
         include "config.php";
         $stylePath = "/assets/css/";
@@ -20,6 +22,8 @@
 
         <script src="scripts/loadStylesheet.js"></script>
         <script src="scripts/script.js"></script>
+        
+        <link rel="alternate" type="application/rss+xml" title="Yesterweb Blog" href="/feed.php" />
     </head>
         <body>
             <?php
